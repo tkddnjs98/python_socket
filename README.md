@@ -1,6 +1,21 @@
 # python_socket
 개발환경: 언어는 파이썬을 활용하였다. 그리고 pycharm을 활용하여 편집을 하고 실행을 하였다. 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 1. Head
 HEAD 메서드는 GET 메서드의 요청과 동일한 응답을 요구하지만, 응답 본문을 포함하지 않습니다.
 Head에 관한 client의 입력
@@ -26,6 +41,17 @@ POST 메서드는 특정 리소스에 엔티티를 제출할 때 쓰입니다. �
 Post은 body에서 입력한 데이터를 서버에 저장한다. 이 때, 지정된 경로를 잘 입력해야 한다. 
 POST에 관한 client에서의 입력
 
+![image](https://user-images.githubusercontent.com/89904421/166412247-7b3b96fa-8121-429d-abaf-7a83b01c101e.png)
+
+서버에서 온 요청
+
+![image](https://user-images.githubusercontent.com/89904421/166412341-119b7f81-0da1-4ce0-9e7e-2cd6b74aaf14.png)
+
+서버의 응답
+![image](https://user-images.githubusercontent.com/89904421/166412373-e5f503d3-4004-4dee-9d55-8d43014dd288.png)
+
+csv파일을 확인하면 update라는 칼럼으로 client의 body에서 작성한 데이터가 잘 작성된 것을 볼 수 있다. 
+![image](https://user-images.githubusercontent.com/89904421/166412443-90c9c229-ed39-42c4-b8ac-9be2b1a3a27d.png)
 
 
 
@@ -38,6 +64,7 @@ PUT은 body에서 입력한 데이터를 서버에 저장한다. 지정된 경�
 ![image](https://user-images.githubusercontent.com/89904421/166409565-9e3383d1-bd66-42c1-9589-8c59c814eecc.png)
 
 서버에서 온 요청 
+
 ![image](https://user-images.githubusercontent.com/89904421/166409623-19323b5b-ac4c-4692-993f-866cc1727c2a.png)
 
 서버의 응답
@@ -50,6 +77,18 @@ PUT은 body에서 입력한 데이터를 서버에 저장한다. 지정된 경�
 
 
 
-5. 잘못된 요청
+5. 잘못된 요청을 보내는 경우
+
+client의 잘못된 요청
+
+![image](https://user-images.githubusercontent.com/89904421/166412764-c4ff7f9d-2cbe-4ec3-8157-6b035e99c3b0.png)
+
+이에 따른 응답
+
+![image](https://user-images.githubusercontent.com/89904421/166412789-bd0f6b48-d3f7-43e2-97ad-1a1143e8d511.png)
+
+
+
+
 
 
