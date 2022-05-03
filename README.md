@@ -2,6 +2,135 @@
 개발환경: 언어는 파이썬을 활용하였다. 그리고 pycharm을 활용하여 편집을 하고 실행을 하였다. 
 
 
+server코드 구현
+```
+
+```
+
+
+
+```
+import socket
+import csv
+from collections import OrderedDict
+serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serverSocket.bind((socket.gethostname(), 8080)) #Port = 8080
+serverSocket.listen(5)
+while True:
+    clientSocket, address = serverSocket.accept()
+    print(f"Connection established from address {address}")
+    clientSocket.send(bytes("Welcome to the server!!", "utf-8"))
+
+```
+서버에서 client와 연결하는 부분이다. 포트 부분은 8080으로 설정하였다. 
+
+
+```
+accepted_request = clientSocket.recv(2048).decode('utf-8')
+    print(accepted_request)
+    request = accepted_request.split("\n")
+    print(request)
+    method = request[0].split()[0]
+``` 
+요청형식으로 도착한 요청에서 메소드와 경로, 그리고 body를 가져오기 위해
+요청에서 \ㅜ에 따라 분리하였습니다. 
+['{method} / HTTP/1.1\r', 'Host: {url}\r', 'Content-Type: text/html\r',
+  'Connection: keep-alive\r', 'Content-Length: {len(body)}\r', '', '{body}']
+ 
+이런 형식으로 요청이 나눠집니다.
+나눠진 요소중에 제일 앞에 있는 요소를 method라는 변수에 저장을 하였습니다. 
+그다음 요소중 6번째 글짜부터 나머지 요소를 url이라는 변수에 저장을 하였습니다.
+마지막으로 리스트의 제일 뒤에 있는 원소를 body라는 변수에 저장을 하였습니다.  
+
+
+```
+    if "/" in url:
+        host, path = url.split('/')
+        host = host
+        path = path
+    else:
+        host = url
+        path = None
+
+```
+
+url에서 /가 있으면 host와 path로 나누어서 저장, 아니면 host에 url을 저장하였습니다. 
+
+
+```
+        if method == "HEAD":
+            clientSocket.send(bytes(
+                f"HTTP/1.1 100 CONTINUE\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {body_length}\r\n\n{body}",
+                encoding='utf8'))
+
+```
+HEAD method에 대한 응답부분입니다. 
+body에 추가적인 데이터가 없고 100 CONTINUE를 보냈습니다. 
+
+
+
+
+```
+
+```
+GET method에 대한 응답부분입니다. 
+
+
+
+
+
+```
+        elif method == "PUT":
+            body = body.split(":")
+            body = ['update'] + body
+            if "update" in path and len(body) == 3:
+                with open ('data_server.csv', "w") as file:
+                    writers = csv.writer(file)
+                    writers.writerow([body[0]])
+                    writers.writerow([body[1]])
+                    writers.writerow([body[2]])
+                    file.close()
+                clientSocket.send(bytes(
+                    f"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {body_length}\r\n\n{body}",
+                    encoding='utf8'))
+                break
+            else:
+                clientSocket.send(bytes(
+                    f"HTTP/1.1 400 BAD_REQUEST\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {body_length}\r\n\n{body}",encoding='utf8'))
+                break
+```
+PUT을 수현한 부분이다. 
+PUT을 받고 body에서 나온 정보를 나눴다. body에서 PUT을 하려는 데이터가 올바른 형식으로 보내졌는지 그리고 PUT을 하는 경로가 
+맞는지 확인을 한 후, 경로가 맞으면 csv를 열어서 body에서 입력한 데이터를 저장하였습니다. 
+잘 보냈으면 200 OK가 가지만, 잘못 보낸 경우 400 BAD REQUEST가 나옵니다. 
+
+
+```     elif method == "POST":
+            body = body.split(":")
+            body = ['create'] + body
+            if "create" in path and len(body) == 3:
+                with open('data_server.csv', "w") as file:
+                    writers = csv.writer(file)
+                    writers.writerow([body[0]])
+                    writers.writerow([body[1]])
+                    writers.writerow([body[2]])
+                    file.close()
+                clientSocket.send(bytes(
+                    f"HTTP/1.1 201 CREATED\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {body_length}\r\n\n{body}",
+                    encoding='utf8'))
+                break
+            else:
+                clientSocket.send(bytes ( f"HTTP/1.1 400 BAD_REQUEST\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {body_length}\r\n\n{body}", encoding='utf8'))
+                break
+
+```
+POST을 수현한 부분이다. 
+POST를 받고 body에서 나온 정보를 나눴다. body에서 POST를 하려는 데이터가 올바른 형식으로 보내졌는지 그리고 POST를 하는 경로가 
+맞는지 확인을 한 후, 경로가 맞으면 csv를 열어서 body에서 입력한 데이터를 저장하였습니다. 
+잘 보냈으면 201 CREATED가 전송되지만, 잘못 보낸 경우 400 BAD REQUEST가 전송됩니다. 
+
+
+
 
 
 client 코드 구현
