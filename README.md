@@ -13,14 +13,14 @@ clientSocket.connect((socket.gethostname(), 8080))
 message = clientSocket.recv(2048).decode('utf-8')
 print("Message Received", message)
 ```
-
-호스트와 연결을 하고 연결이 되면 호스트에서 오는 메시지를 읽는 코드이다. 
-
+client에서 port번호와 ip번호를 입력하여 서버와 연결을 하는 코드이다. 
+컴퓨터 한대로 구현하였기 때문에 ip자리에 socket.gethostname()를 입력하였다.  
+호스트와 연결을 하고 연결이 되면 호스트에서 Welcome to the server!!라는 메시지가 오는데 
+메시지를 받고 출력하였다. 
 ```
 method_check_list = ["GET", "PUT", "POST", "HEAD"]
-#GET: 200 OK, 404 NOT FOUND
-#HEAD: 100 CONTINUE, 404 NOT FOUND
-IP = '10.30.118.28'
+
+#IP = '10.30.118.28'
 while True:
     method = input("Enter Method:")
     method = method.upper()
