@@ -71,9 +71,26 @@ body에 추가적인 데이터가 없고 100 CONTINUE를 보냈습니다.
 
 
 ```
+ elif method == "GET":
+            data_df = pd.read_csv('data_server.csv')
+            if data_df.empty:
+                clientSocket.send(bytes(
+                    f"HTTP/1.1 404 NOT_FOUND\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {body_length}\r\n\n{No data}",
+                    encoding='utf8'))
+                break
 
+            else:
+                print(data_df)
+                generated_data = data_df[data_df.columns[0]]
+                body2 = {generated_data[0]: generated_data[1]}
+                clientSocket.send(bytes(f"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {body_length}\r\n\n{body2}",
+                    encoding='utf8'))
+            break
 ```
-GET method에 대한 응답부분입니다. 
+GET method에 대한 응답부분입니다. data_server이란 csv파일을 판다스를 활용하여 열었습니다. 
+만약에 csv파일에 아무것도 존재하지 않으면 body에 No data라는 말을 보냈습니다. 
+만약에 데이터가 존재한다면 csv파일에서 칼럼을 받고 칼럼에서 저장된 데이터를 
+딕셔너리 형태로 클라이언트에게 보냈습니다. 
 
 
 
