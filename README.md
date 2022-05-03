@@ -5,18 +5,18 @@
 
 
 client 코드 구현
-'''
+```
 import socket
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 clientSocket.connect((socket.gethostname(), 8080))
 
 message = clientSocket.recv(2048).decode('utf-8')
 print("Message Received", message)
+```
 
-'''
 호스트와 연결을 하고 연결이 되면 호스트에서 오는 메시지를 읽는 코드이다. 
 
-'''
+```
 method_check_list = ["GET", "PUT", "POST", "HEAD"]
 #GET: 200 OK, 404 NOT FOUND
 #HEAD: 100 CONTINUE, 404 NOT FOUND
@@ -30,7 +30,7 @@ while True:
         break
 url = input("ENTER PATH:")
 body = input("Enter Body:")
-'''
+```
 
 method, url, body를 입력하는 부분이다. 
 while문을 활용하여 method는 get, put, post, head만 입력하도록 만들었다. 
@@ -38,20 +38,20 @@ while문을 활용하여 method는 get, put, post, head만 입력하도록 만�
 
 
 
-'''
+```
 def format_request(method, url, body):
     return f"{method} / HTTP/1.1\r\nHost: {url}\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nContent-Length: {len(body)}\r\n\n{body}"
-'''
+```
 입력한 요청을 http의 프로토콜에 맞춰서 구현하는 함수이다.
 
 
-'''
+```
 request = format_request(method, url, body)
 clientSocket.send(request.encode('utf-8'))
 received_message = clientSocket.recv(2048).decode('utf-8')
 print(received_message)
 clientSocket.close()
-'''
+```
 
 입력한 요청을 http의 프로토콜에 맞춰서 구현한다음 
 server에 보냈다. 
